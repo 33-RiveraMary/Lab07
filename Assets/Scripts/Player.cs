@@ -23,8 +23,14 @@ public class Player : MonoBehaviour
         {
             thisAnimation.Play();
 
+            //jump
             rigidBody.velocity += Vector3.up * jumpForce;
         }
 
+        //ensure cannot fly above screen
+        if (transform.position.y > 3.55f)
+        {
+            transform.position = new Vector3(0f, 3.55f, 0f);
+        }
     }
 }
