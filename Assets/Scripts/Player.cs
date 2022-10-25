@@ -12,8 +12,7 @@ public class Player : MonoBehaviour
     public float jumpForce;
 
     //gameover
-    private bool isAlive;
-    public GameObject gameoverTxt;
+    public GameManager managerScript;
 
     void Start()
     {
@@ -21,23 +20,16 @@ public class Player : MonoBehaviour
         thisAnimation["Flap_Legacy"].speed = 3;
 
         rigidBody = GetComponent<Rigidbody>();
-
-        isAlive = true;
-        gameoverTxt.SetActive(false);
     }
 
     void Update()
     {
-        //check if game is playing
-        if (isAlive)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                thisAnimation.Play();
+            thisAnimation.Play();
 
-                //jump
-                rigidBody.velocity += Vector3.up * jumpForce;
-            }
+            //jump
+            rigidBody.velocity += Vector3.up * jumpForce;
         }
 
         //ensure cannot fly above screen
@@ -50,9 +42,7 @@ public class Player : MonoBehaviour
         if (transform.position.y < -3.7f)
         {
             //gameover
-            gameoverTxt.SetActive(true);
-
-            isAlive = false;
+            managerScript.GameOver();
         }
     }
 
@@ -61,9 +51,16 @@ public class Player : MonoBehaviour
         //gameover when collide with obstacle
         if (other.gameObject.tag == "Obstacle")
         {
-            gameoverTxt.SetActive(true);
+            managerScript.GameOver();
+        }
+    }
 
-            isAlive = false;
+    private void OnTriggerEnter(Collider other)
+    {
+        //increase score after passing obstacle
+        if (other.gameObject.tag == "ObstTrigger")
+        {
+            managerScript.UpdateScore(1);
         }
     }
 }
