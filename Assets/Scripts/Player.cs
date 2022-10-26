@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     private Animation thisAnimation;
     private Rigidbody rigidBody;
+    private AudioSource audioSource;
 
     //jump
     public float jumpForce;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
         thisAnimation["Flap_Legacy"].speed = 3;
 
         rigidBody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
 
             //jump
             rigidBody.velocity += Vector3.up * jumpForce;
+            audioSource.Play();
         }
 
         //ensure cannot fly above screen
